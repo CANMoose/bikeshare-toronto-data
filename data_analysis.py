@@ -1,7 +1,11 @@
 import urllib
 import xml.etree.ElementTree as ET
 import numpy as np
-from time import asctime
+import time
+
+## Some notes:
+
+# time.ctime(<times>) will give a str of the local Toronto time
 
 class BikeBay(object):
 
@@ -31,7 +35,7 @@ def getBikeBayData(url=True, fl=None):
         data = urllib.urlopen(url).read()
     
         # Make record of data
-        f = open('/Users/relliotmeyer/gitrepos/bikeshare-toronto-data/data/'+asctime()+'.txt','w')
+        f = open('/Users/relliotmeyer/gitrepos/bikeshare-toronto-data/data/'+time.asctime()+'.txt','w')
         f.write(data)
         f.close()
     
