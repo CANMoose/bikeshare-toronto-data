@@ -12,8 +12,8 @@ import subprocess
 ## MAKE SURE YOU UPDATE THE BASE DIRECTORY (directory that contains
 ## bikeshare-toronto-data
 
-homedir = '/home/meyer/dev/'
-#homedir = '/Users/relliotmeyer/gitrepos/'
+#homedir = '/home/meyer/dev/'
+homedir = '/Users/relliotmeyer/gitrepos/'
 
 
 #class BikeShare(object):
@@ -42,17 +42,13 @@ class BikeBay(object):
 
     
 ######
-def getBikeBayData(url=True, fl=None, write=False):
+def getBikeBayData(url=True, write=False):
     '''Acesses the Toronto Bike Share bike bay data file and returns a list of bike
     bay objects each with the information regarding each bay'''
 
     if url:
         url = 'http://www.bikesharetoronto.com/data/stations/bikeStations.xml'
         data = urllib.urlopen(url).read()
-
-    elif fl:
-        flopen = open(fl,'r')
-        data = flopen.read()
 
     root = ET.fromstring(data)
 
@@ -86,13 +82,19 @@ def check_if_updated(bay):
     else:
         return False
 
-def get_bikebayfile(ind):
-    
+def get_datafiles():
+
     datafiles = glob(homedir+'bikeshare-toronto-data/data/*.txt')
     datafiles_id = []
     
     for datafile in datafiles:
         datafiles_id.append(int((datafile.split('/')[-1]).split('_')[0]))
+
+    return [datafiles, datafiles_id]
+
+def get_bikebayfile(ind):
+    
+    datafiles, datafiles_id = get_datafiles()
 
     whereid = np.where(np.array(datafiles_id) == ind)[0][0]
 
