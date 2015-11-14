@@ -54,6 +54,8 @@ def build_datacube():
 
 if __name__ == '__main__':
     
+    write_localtimes(88)
+
     #datafiles, datafiles_id = bb.get_datafiles()
     #for fl in datafiles:
     #    if check_nobikes(fl):
@@ -64,8 +66,8 @@ if __name__ == '__main__':
         times = bay[:,0]
         n_bikes = bay[:,1]
 
-        mpl.plot(times, n_bikes)
-        if i % 5 == 0: 
-            mpl.show()
+    #    mpl.plot(times, n_bikes)
+      #  if i % 5 == 0: 
+     #       mpl.show()
         i += 1
 
