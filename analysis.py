@@ -42,9 +42,30 @@ def read_file(fl):
 
     return spl_lines
 
+def build_datacube():
+
+    datafiles, datafiles_id = bb.get_datafiles()
+    cube = []
+    for fl in datafiles:
+        data = read_file(fl)
+        cube.append(data[:,1:])
+
+    return cube
+
 if __name__ == '__main__':
     
-    datafiles, datafiles_id = bb.get_datafiles()
-    for fl in datafiles:
-        print fl, check_nobikes(fl)
+    #datafiles, datafiles_id = bb.get_datafiles()
+    #for fl in datafiles:
+    #    if check_nobikes(fl):
+    #        print fl.split()[-1]
+    cube = build_datacube()
+    i = 1
+    for bay in cube:
+        times = bay[:,0]
+        n_bikes = bay[:,1]
+
+        mpl.plot(times, n_bikes)
+        if i % 5 == 0: 
+            mpl.show()
+        i += 1
 
