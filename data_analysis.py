@@ -9,8 +9,11 @@ import subprocess
 
 # time.ctime(<times>) will give a str of the local Toronto time
 
-#homedir = '/home/meyer/dev/'
-homedir = '/Users/relliotmeyer/gitrepos/'
+## MAKE SURE YOU UPDATE THE BASE DIRECTORY (directory that contains
+## bikeshare-toronto-data
+
+homedir = '/home/meyer/dev/'
+#homedir = '/Users/relliotmeyer/gitrepos/'
 
 
 #class BikeShare(object):
