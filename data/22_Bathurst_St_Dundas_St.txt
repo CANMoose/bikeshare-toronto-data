@@ -1,0 +1,2 @@
+LastComm	LastUpdate	N_Bikes	N_Empty
+1447701519179	1447696559188	4	13
