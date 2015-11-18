@@ -13,8 +13,8 @@ import subprocess
 ## bikeshare-toronto-data
 
 #homedir = '/home/meyer/dev/'
-homedir = '/Users/relliotmeyer/gitrepos/'
-
+#homedir = '/Users/relliotmeyer/gitrepos/'
+homedir = '/home/pi/'
 
 #class BikeShare(object):
 
@@ -143,7 +143,7 @@ def acquire_data():
     while True:
         try:
             bikebays = getBikeBayData()
-        except ParseError:
+        except:
             continue
         for bay in bikebays:
             updated = check_if_updated(bay)
