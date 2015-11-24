@@ -141,7 +141,10 @@ def acquire_data():
 
     starttime = time.time()
     while True:
-        bikebays = getBikeBayData()
+        try:
+            bikebays = getBikeBayData()
+        except ParseError:
+            continue
         for bay in bikebays:
             updated = check_if_updated(bay)
             if updated:
