@@ -104,7 +104,7 @@ def update_file(bay):
     bayid = bay.id
     whereid, filename, datafiles = get_bikebayfile(bayid)
     f = open(filename, 'a')
-    f.write("%s\t%s\t%s\n" % (str(bay.lastcomm), \
+    f.write("%s\t%s\t%s\t%s\n" % (str(bay.lastcomm/1000), str(int(time.time())),\
         str(bay.nbikes), str(bay.nempty)))
     f.close()
 
@@ -132,7 +132,7 @@ def __init__datadir(clean=False, newbay=False):
             name = '_'.join(namearr)
             
             f = open(homedir+'bikeshare-toronto-data/data/'+name+'.txt', 'w')
-            f.write('LastComm\tN_Bikes\tN_Empty\n')
+            f.write('LastComm\tRead_Time\tN_Bikes\tN_Empty\n')
             f.close()
         getBikeBayData(write = True)
         
