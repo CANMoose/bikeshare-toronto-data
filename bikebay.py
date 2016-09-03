@@ -13,18 +13,17 @@ import subprocess
 ## bikeshare-toronto-data
 
 #homedir = '/home/meyer/dev/'
-homedir = '/Users/relliotmeyer/gitrepos/'
-
+#homedir = '/Users/relliotmeyer/gitrepos/'
+homedir = '/home/pi/'
 
 #class BikeShare(object):
 
 class BikeBay(object):
 
-    def __init__(self, bayid, street, terminalname, lastcomm, lat, lon, installed, locked,\
-        temporary, public, nbikes, nempty, lastupdate):
+    def __init__(self, bayid, street, lastcomm, lat, lon, installed, locked,\
+        temporary, public, nbikes, nempty):
         self.id = int(bayid)
         self.street = street
-        self.terminalname = terminalname
         self.lastcomm = int(lastcomm)
         self.lat = lat
         self.long = lon
@@ -34,10 +33,9 @@ class BikeBay(object):
         self.public = public
         self.nbikes = int(nbikes)
         self.nempty = int(nempty)
-        self.lastupdate = int(lastupdate)
 
     def updatetimes(self):
-        print 'Last Update: '+ time.ctime(self.lastupdate)/1000.
+        #print 'Last Update: '+ time.ctime(self.lastupdate)/1000.
         print 'Last Comm: '+ time.ctime(self.lastcomm/1000.)+'\n'
 
     
@@ -47,7 +45,8 @@ def getBikeBayData(url=True, write=False):
     bay objects each with the information regarding each bay'''
 
     if url:
-        url = 'http://www.bikesharetoronto.com/data/stations/bikeStations.xml'
+        #url = 'http://www.bikesharetoronto.com/data/stations/bikeStations.xml'
+        url = 'http://feeds.bikesharetoronto.com/stations/stations.xml'
         data = urllib.urlopen(url).read()
 
     root = ET.fromstring(data)
@@ -55,9 +54,9 @@ def getBikeBayData(url=True, write=False):
     bikebays = []
 
     for i, st in enumerate(root):
-        bikebays.append(BikeBay(st[0].text,st[1].text,st[2].text,st[3].text,\
+        bikebays.append(BikeBay(st[0].text,st[1].text,st[3].text,\
             st[4].text,st[5].text,st[6].text,st[7].text,st[10].text,st[11].text,\
-            st[12].text,st[13].text,st[14].text))
+            st[12].text,st[13].text))
     
     if url and write:
         for bay in bikebays:
@@ -105,7 +104,7 @@ def update_file(bay):
     bayid = bay.id
     whereid, filename, datafiles = get_bikebayfile(bayid)
     f = open(filename, 'a')
-    f.write("%s\t%s\t%s\t%s\n" % (str(bay.lastcomm), str(bay.lastupdate), \
+    f.write("%s\t%s\t%s\t%s\n" % (str(bay.lastcomm/1000), str(int(time.time())),\
         str(bay.nbikes), str(bay.nempty)))
     f.close()
 
@@ -133,7 +132,7 @@ def __init__datadir(clean=False, newbay=False):
             name = '_'.join(namearr)
             
             f = open(homedir+'bikeshare-toronto-data/data/'+name+'.txt', 'w')
-            f.write('LastComm\tLastUpdate\tN_Bikes\tN_Empty\n')
+            f.write('LastComm\tRead_Time\tN_Bikes\tN_Empty\n')
             f.close()
         getBikeBayData(write = True)
         
@@ -143,15 +142,17 @@ def acquire_data():
     while True:
         try:
             bikebays = getBikeBayData()
-        except ParseError:
+        except:
             continue
         for bay in bikebays:
-            updated = check_if_updated(bay)
-            if updated:
-                print "Updating bikebay #"+str(bay.id)+ ' ' + str(bay.street)
-                update_file(bay)
-        time.sleep(30)
+            #updated = check_if_updated(bay)
+            #if updated:
+            #    print "Updating bikebay #"+str(bay.id)+ ' ' + str(bay.street)
+            #    update_file(bay)
+            #print "Updating bikebay #"+str(bay.id)+ ' ' + str(bay.street)
+            update_file(bay)
         print "It has been " + str((time.time()-starttime)/60.0)+" minutes since starting."
+        time.sleep(60)
 
 if __name__ == '__main__':
     
