@@ -2,6 +2,7 @@ import bikebay as bb
 import numpy as np
 import matplotlib.pyplot as mpl
 import time
+from glob import glob
 
 def write_localtimes(ind):
     '''Converts a bikebay log file into easily read local times'''
@@ -15,7 +16,6 @@ def write_localtimes(ind):
         spl = line.split()
         print time.ctime(float(spl[1])/1000.), \
             spl[2],spl[3], int(spl[2]) + int(spl[3])
-
 
 def check_nobikes(fl):
 
@@ -61,13 +61,10 @@ if __name__ == '__main__':
     #    if check_nobikes(fl):
     #        print fl.split()[-1]
     cube = build_datacube()
-    i = 1
-    for bay in cube:
-        times = bay[:,0]
-        n_bikes = bay[:,1]
-
-    #    mpl.plot(times, n_bikes)
-      #  if i % 5 == 0: 
-     #       mpl.show()
-        i += 1
+   
+    bay = cube[30]
+    times = bay[:,1]
+    n_bikes = bay[:,2]
+    mpl.plot(times,n_bikes)
+    mpl.show()
 
