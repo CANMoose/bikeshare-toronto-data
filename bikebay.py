@@ -69,6 +69,9 @@ def check_if_updated(bay):
     bayid = bay.id
     whereid, filename, datafiles = get_bikebayfile(bayid)
     
+    if not whereid:
+        return 
+    
     f = open(filename, 'r')
     lines = f.readlines()[1:]
     f.close()
@@ -95,7 +98,11 @@ def get_bikebayfile(ind):
     
     datafiles, datafiles_id = get_datafiles()
 
-    whereid = np.where(np.array(datafiles_id) == ind)[0][0]
+    try:
+        whereid = np.where(np.array(datafiles_id) == ind)[0][0]
+    except:
+        print "Possibly new bikebay, please restart script"
+        return None, None, None
 
     return [whereid, datafiles[whereid], datafiles]
 
@@ -103,6 +110,8 @@ def update_file(bay):
     
     bayid = bay.id
     whereid, filename, datafiles = get_bikebayfile(bayid)
+    if not whereid:
+        return
     f = open(filename, 'a')
     f.write("%s\t%s\t%s\t%s\n" % (str(bay.lastcomm/1000), str(int(time.time())),\
         str(bay.nbikes), str(bay.nempty)))
@@ -145,11 +154,6 @@ def acquire_data():
         except:
             continue
         for bay in bikebays:
-            #updated = check_if_updated(bay)
-            #if updated:
-            #    print "Updating bikebay #"+str(bay.id)+ ' ' + str(bay.street)
-            #    update_file(bay)
-            #print "Updating bikebay #"+str(bay.id)+ ' ' + str(bay.street)
             update_file(bay)
         print "It has been " + str((time.time()-starttime)/60.0)+" minutes since starting."
         time.sleep(60)
